@@ -13,9 +13,9 @@ import {
 import rootReducer from './rootReducer';
 
 const persistConfig = {
-  key: 'data',
+  key: 'data1',
   storage: AsyncStorage,
-  version: 2,
+  version: 0,
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

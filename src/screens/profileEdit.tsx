@@ -13,7 +13,6 @@ const EditProfile: React.FC = () => {
   const [newPassword, setNewPassword] = useState('');
   const {loggedInUser} = useContext(Context);
 
-  const state = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
   return (
     <View style={[sharedStyles.flexCenteredContainer]}>
