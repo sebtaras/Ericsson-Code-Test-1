@@ -1,7 +1,8 @@
-import {users} from '../../tempData';
+import {User} from '../model/User';
 
-interface isValidResponse {
+interface isValidUserResponse {
   valid?: boolean;
+  user?: User;
   emailError?: string;
   passwordError?: string;
 }
@@ -9,7 +10,8 @@ interface isValidResponse {
 export const isValidUser = (
   email: string,
   password: string,
-): isValidResponse => {
+  users: User[],
+): isValidUserResponse => {
   if (!email && !password) {
     return {
       emailError: "Email can't be empty",
@@ -31,6 +33,7 @@ export const isValidUser = (
       if (user.password === password) {
         return {
           valid: true,
+          user: user,
         };
       } else {
         return {

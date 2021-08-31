@@ -2,9 +2,11 @@ import React, {useContext} from 'react';
 import {useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
+import {useSelector} from 'react-redux';
 import {placeholderColor} from '../../constants';
 import {Context} from '../../context';
 import {isValidUser} from '../functions/isValidUser';
+import {RootState} from '../redux/store';
 import sharedStyles from '../styles/shared';
 
 const styles = StyleSheet.create({});
@@ -15,12 +17,13 @@ const LoginScreen: React.FC = () => {
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
-  const context = useContext(Context);
+  const {setLoggedInUser} = useContext(Context);
+  const state = useSelector((state: RootState) => state.user);
 
   const handleSubmit = () => {
-    const response = isValidUser(email, password);
-    if (response.valid) {
-      context.setIsLoggedIn(true);
+    const response = isValidUser(email, password, state.users);
+    if (response.valid && response.user) {
+      setLoggedInUser(response.user);
     }
     if (response.emailError) {
       setEmailError(response.emailError);
@@ -36,7 +39,7 @@ const LoginScreen: React.FC = () => {
   };
 
   return (
-    <View style={[sharedStyles.flexContainer]}>
+    <View style={[sharedStyles.flexCenteredContainer]}>
       <Text style={[sharedStyles.largeText, {marginBottom: 30}]}>LOGIN</Text>
       <TextInput
         placeholder="Email"

@@ -36,6 +36,11 @@ import TasksScreen from './src/screens/tasks';
 import LocationScreen from './src/screens/location';
 import {Context} from './context';
 import Checklist from './src/screens/checklist';
+import store, {persistor} from './src/redux/store';
+import {Provider} from 'react-redux';
+import {User} from './src/model/User';
+import EditProfile from './src/screens/profileEdit';
+import {PersistGate} from 'redux-persist/integration/react';
 
 const Stack = createStackNavigator();
 
@@ -43,7 +48,7 @@ const HomeTabNavigator: React.FC = () => {
   const context = useContext(Context);
   return (
     <Tab.Navigator>
-      {context.isLoggedIn ? (
+      {context.loggedInUser ? (
         <>
           <Tab.Screen name="Profile" component={ProfileScreen} />
           <Tab.Screen name="Location" component={LocationScreen} />
@@ -65,13 +70,13 @@ const HomeTabNavigator: React.FC = () => {
 const Tab = createMaterialTopTabNavigator();
 
 const App: React.FC = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [loggedInUser, setLoggedInUser] = useState<null | User>(null);
 
   return (
     <Context.Provider
       value={{
-        isLoggedIn,
-        setIsLoggedIn: (value: boolean) => setIsLoggedIn(value),
+        loggedInUser,
+        setLoggedInUser: (user: User | null) => setLoggedInUser(user),
       }}>
       <NavigationContainer>
         <Stack.Navigator>
@@ -81,10 +86,20 @@ const App: React.FC = () => {
             options={{header: () => null}}
           />
           <Stack.Screen name="Checklist" component={Checklist} />
+          <Stack.Screen name="Edit Profile" component={EditProfile} />
         </Stack.Navigator>
       </NavigationContainer>
     </Context.Provider>
   );
 };
 
-export default App;
+const AppWrapper: React.FC = () => {
+  return (
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <App />
+      </PersistGate>
+    </Provider>
+  );
+};
+export default AppWrapper;

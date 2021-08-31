@@ -47,7 +47,7 @@ const LocationScreen: React.FC = () => {
   });
 
   return (
-    <View style={[sharedStyles.flexContainer]}>
+    <View style={[sharedStyles.flexCenteredContainer]}>
       <View style={{height: getHeight(), width: getWidth()}}>
         <MapView
           provider={PROVIDER_GOOGLE}

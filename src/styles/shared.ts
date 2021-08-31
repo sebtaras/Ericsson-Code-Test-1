@@ -5,10 +5,13 @@ const sharedStyles = StyleSheet.create({
   debugBorder: {
     borderWidth: 1,
   },
-  flexContainer: {
+  flexCenteredContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  flex1Container: {
+    flex: 1,
   },
   button: {
     borderRadius: 10,
