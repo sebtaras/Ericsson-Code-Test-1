@@ -13,8 +13,8 @@ const styles = StyleSheet.create({});
 
 const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState('');
-  const [emailError, setEmailError] = useState('');
   const [password, setPassword] = useState('');
+  const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
   const {setLoggedInUser} = useContext(Context);
