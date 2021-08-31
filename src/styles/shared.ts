@@ -40,6 +40,9 @@ const sharedStyles = StyleSheet.create({
   largeText: {
     fontSize: 25,
   },
+  centeredText: {
+    textAlign: 'center',
+  },
 });
 
 export default sharedStyles;
