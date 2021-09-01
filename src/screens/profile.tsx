@@ -1,24 +1,38 @@
-import React, {useContext} from 'react';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import React, {useContext, useState} from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
-import {placeholderColor} from '../../constants';
+import {placeholderColor, primaryColor} from '../../constants';
 import {Context} from '../../context';
 import {clearLoggedInUser} from '../../storageFunctions';
 import {profileStyles} from '../styles/profileStyles';
 import sharedStyles from '../styles/shared';
+import {faCog} from '@fortawesome/free-solid-svg-icons';
+import Separator from '../components/separator';
+import {RootState} from '../redux/store';
+import {getUserValues} from '../functions/getUserValues';
 
 const ProfileScreen: React.FC<any> = ({navigation}) => {
-  const context = useContext(Context);
-  const state = useSelector((state: any) => state.user);
+  const {setLoggedInUser, userValues} = useContext(Context);
+
   return (
     <View style={[sharedStyles.flex1Container]}>
-      <Text>Welcome {context.loggedInUser?.email}</Text>
-      <Text>BIO</Text>
-      <Text>{context.loggedInUser?.bio}</Text>
+      <View style={[sharedStyles.flexCenteredContainer, {marginBottom: 100}]}>
+        <View>
+          <Text style={[sharedStyles.largeText]}>
+            {userValues?.email.toUpperCase()}
+          </Text>
+        </View>
+        <Separator />
+        <Text style={[sharedStyles.mediumText]}>BIO</Text>
+        <View>
+          <Text>{userValues?.bio}</Text>
+        </View>
+      </View>
       <TouchableOpacity
         onPress={() => {
-          context.setLoggedInUser(null);
+          setLoggedInUser(null);
           clearLoggedInUser();
         }}
         style={[
@@ -34,9 +48,9 @@ const ProfileScreen: React.FC<any> = ({navigation}) => {
         onPress={() => {
           navigation.navigate('Edit Profile');
         }}
-        style={[sharedStyles.button, profileStyles.editButton]}>
-        <View>
-          <Text style={[sharedStyles.blackText]}>EDIT</Text>
+        style={[profileStyles.editButton]}>
+        <View style={[sharedStyles.flexContainerRow]}>
+          <FontAwesomeIcon icon={faCog} size={20} color={primaryColor} />
         </View>
       </TouchableOpacity>
     </View>

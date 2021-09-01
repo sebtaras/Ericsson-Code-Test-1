@@ -9,13 +9,17 @@ import TasksScreen from './src/screens/tasks';
 import LocationScreen from './src/screens/location';
 import {Context} from './context';
 import Checklist from './src/screens/checklist';
-import store, {persistor} from './src/redux/store';
-import {Provider} from 'react-redux';
+import store, {persistor, RootState} from './src/redux/store';
+import {Provider, useSelector} from 'react-redux';
 import {User} from './src/model/User';
 import EditProfile from './src/screens/profileEdit';
 import {PersistGate} from 'redux-persist/integration/react';
 import {useEffect} from 'react';
-import {getLoggedInUser} from './storageFunctions';
+import {
+  clearLoggedInUser,
+  getLoggedInUser,
+  storeLoggedInUser,
+} from './storageFunctions';
 import Loading from './src/components/loading';
 
 const Stack = createStackNavigator();
@@ -48,7 +52,17 @@ const Tab = createMaterialTopTabNavigator();
 const App: React.FC = () => {
   const [loggedInUser, setLoggedInUser] = useState<null | User>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-
+  //TODO OVAJ USER VALUES SLAT KO PROPS UMJESTO CONTEXT
+  const userValues = useSelector((state: RootState) => {
+    if (loggedInUser == null) {
+      return null;
+    }
+    for (const user of state.user.users) {
+      if (user.id == loggedInUser?.id) {
+        return state.user.users[state.user.users.indexOf(user)];
+      }
+    }
+  });
   useEffect(() => {
     async function loadUser() {
       let result = await getLoggedInUser();
@@ -68,7 +82,20 @@ const App: React.FC = () => {
       <Context.Provider
         value={{
           loggedInUser,
+          userValues,
           setLoggedInUser: (user: User | null) => setLoggedInUser(user),
+          updateUserBio: async (bio: string) => {
+            console.log('called');
+            setLoggedInUser(user => {
+              if (user) {
+                const updatedUser = {...user, bio};
+                storeLoggedInUser(updatedUser);
+                return updatedUser;
+              } else {
+                return null;
+              }
+            });
+          },
         }}>
         <NavigationContainer>
           <Stack.Navigator>

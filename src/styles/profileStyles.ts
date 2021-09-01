@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {primaryColor} from '../../constants';
 
 export const profileStyles = StyleSheet.create({
   logOutButton: {
@@ -7,9 +8,12 @@ export const profileStyles = StyleSheet.create({
     left: 10,
   },
   editButton: {
-    borderWidth: 1,
+    borderWidth: 2,
+    borderColor: primaryColor,
+    borderRadius: 10,
     position: 'absolute',
     top: 10,
     right: 10,
+    padding: 10,
   },
 });

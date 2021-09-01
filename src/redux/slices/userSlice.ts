@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {users} from '../../../tempData';
 
 export const userSlice = createSlice({
@@ -7,7 +7,7 @@ export const userSlice = createSlice({
     users: users,
   },
   reducers: {
-    setPassword: (state, action) => {
+    setPassword: (state, action: PayloadAction<setPasswordAction>) => {
       for (let user of state.users) {
         if (
           user.email === action.payload.email &&
@@ -18,14 +18,26 @@ export const userSlice = createSlice({
         }
       }
     },
-    setBio: (state, action) => {
+    setBio: (state, action: PayloadAction<setBioAction>) => {
       for (let user of state.users) {
-        state.users[state.users.indexOf(user)].bio = action.payload.bio;
+        if (user.id == action.payload.userId)
+          state.users[state.users.indexOf(user)].bio = action.payload.bio;
       }
     },
   },
 });
 
-export const {setPassword} = userSlice.actions;
+interface setPasswordAction {
+  email: string;
+  currentPassword: string;
+  newPassword: string;
+}
+
+interface setBioAction {
+  bio: string;
+  userId: number | string | number[];
+}
+
+export const {setPassword, setBio} = userSlice.actions;
 
 export default userSlice.reducer;

@@ -20,7 +20,7 @@ const TasksScreen: React.FC<any> = ({navigation}) => {
   const state = useSelector((state: RootState) => state.tasks);
   const [isDialogVisible, setIsDialogVisible] = useState(false);
   const [newTaskName, setNewTaskName] = useState('');
-  const {loggedInUser} = useContext(Context);
+  const {userValues} = useContext(Context);
   const dispatch = useDispatch();
   return (
     <View style={[sharedStyles.flex1Container, {marginTop: 5}]}>
@@ -45,7 +45,7 @@ const TasksScreen: React.FC<any> = ({navigation}) => {
                 setNewTaskName('');
                 dispatch(
                   addTask({
-                    task: createNewTask(newTaskName, loggedInUser!.id),
+                    task: createNewTask(newTaskName, userValues!.id),
                   }),
                 );
               }}
@@ -55,7 +55,7 @@ const TasksScreen: React.FC<any> = ({navigation}) => {
         </View>
         <ScrollView>
           {state.tasks.map((task, index) => {
-            if (task.ownerId === loggedInUser?.id)
+            if (task.ownerId === userValues?.id)
               return (
                 <TouchableOpacity
                   style={[taskStyles.itemContainer, taskStyles.taskContainer]}

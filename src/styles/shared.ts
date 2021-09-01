@@ -13,6 +13,11 @@ const sharedStyles = StyleSheet.create({
   flex1Container: {
     flex: 1,
   },
+  flexContainerRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   button: {
     borderRadius: 10,
     paddingVertical: 12.5,
@@ -42,6 +47,9 @@ const sharedStyles = StyleSheet.create({
   },
   largeText: {
     fontSize: 25,
+  },
+  largerText: {
+    fontSize: 30,
   },
   centeredText: {
     textAlign: 'center',

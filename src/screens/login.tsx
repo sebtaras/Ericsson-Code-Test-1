@@ -10,8 +10,6 @@ import {isValidUser} from '../functions/isValidUser';
 import {RootState} from '../redux/store';
 import sharedStyles from '../styles/shared';
 
-const styles = StyleSheet.create({});
-
 const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
