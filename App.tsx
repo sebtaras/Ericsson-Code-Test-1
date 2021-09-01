@@ -14,6 +14,9 @@ import {Provider} from 'react-redux';
 import {User} from './src/model/User';
 import EditProfile from './src/screens/profileEdit';
 import {PersistGate} from 'redux-persist/integration/react';
+import {useEffect} from 'react';
+import {getLoggedInUser} from './storageFunctions';
+import Loading from './src/components/loading';
 
 const Stack = createStackNavigator();
 
@@ -44,26 +47,43 @@ const Tab = createMaterialTopTabNavigator();
 
 const App: React.FC = () => {
   const [loggedInUser, setLoggedInUser] = useState<null | User>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  return (
-    <Context.Provider
-      value={{
-        loggedInUser,
-        setLoggedInUser: (user: User | null) => setLoggedInUser(user),
-      }}>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen
-            name="Home"
-            component={HomeTabNavigator}
-            options={{header: () => null}}
-          />
-          <Stack.Screen name="Checklist" component={Checklist} />
-          <Stack.Screen name="Edit Profile" component={EditProfile} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </Context.Provider>
-  );
+  useEffect(() => {
+    async function loadUser() {
+      let result = await getLoggedInUser();
+      console.log(result);
+      if (result) {
+        setLoggedInUser(result);
+      }
+      setIsLoading(false);
+    }
+    loadUser();
+  }, []);
+
+  if (isLoading) {
+    return <Loading />;
+  } else {
+    return (
+      <Context.Provider
+        value={{
+          loggedInUser,
+          setLoggedInUser: (user: User | null) => setLoggedInUser(user),
+        }}>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen
+              name="Home"
+              component={HomeTabNavigator}
+              options={{header: () => null}}
+            />
+            <Stack.Screen name="Checklist" component={Checklist} />
+            <Stack.Screen name="Edit Profile" component={EditProfile} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Context.Provider>
+    );
+  }
 };
 
 const AppWrapper: React.FC = () => {

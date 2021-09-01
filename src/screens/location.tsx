@@ -34,10 +34,7 @@ const LocationScreen: React.FC = () => {
           error => {
             console.log(error);
           },
-          {
-            enableHighAccuracy: true,
-            maximumAge: 100000,
-          },
+          {enableHighAccuracy: true, maximumAge: 100000},
         );
       } else {
         setGranted(false);

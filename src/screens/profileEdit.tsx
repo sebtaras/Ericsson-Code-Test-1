@@ -5,6 +5,7 @@ import {TextInput} from 'react-native-gesture-handler';
 import {useDispatch, useSelector} from 'react-redux';
 import {placeholderColor} from '../../constants';
 import {Context} from '../../context';
+import {clearLoggedInUser} from '../../storageFunctions';
 import {isValidNewPassword} from '../functions/isValidNewPassword';
 import {setPassword} from '../redux/slices/userSlice';
 import sharedStyles from '../styles/shared';
@@ -49,6 +50,7 @@ const EditProfile: React.FC = () => {
         0,
         200,
       );
+      clearLoggedInUser();
     }
   };
 

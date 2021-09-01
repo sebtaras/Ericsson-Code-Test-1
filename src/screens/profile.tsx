@@ -4,13 +4,13 @@ import {TextInput} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
 import {placeholderColor} from '../../constants';
 import {Context} from '../../context';
+import {clearLoggedInUser} from '../../storageFunctions';
 import {profileStyles} from '../styles/profileStyles';
 import sharedStyles from '../styles/shared';
 
 const ProfileScreen: React.FC<any> = ({navigation}) => {
   const context = useContext(Context);
   const state = useSelector((state: any) => state.user);
-  console.log(state);
   return (
     <View style={[sharedStyles.flex1Container]}>
       <Text>Welcome {context.loggedInUser?.email}</Text>
@@ -19,6 +19,7 @@ const ProfileScreen: React.FC<any> = ({navigation}) => {
       <TouchableOpacity
         onPress={() => {
           context.setLoggedInUser(null);
+          clearLoggedInUser();
         }}
         style={[
           sharedStyles.button,

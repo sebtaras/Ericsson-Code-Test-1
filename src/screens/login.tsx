@@ -5,6 +5,7 @@ import {TextInput} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
 import {placeholderColor} from '../../constants';
 import {Context} from '../../context';
+import {storeLoggedInUser} from '../../storageFunctions';
 import {isValidUser} from '../functions/isValidUser';
 import {RootState} from '../redux/store';
 import sharedStyles from '../styles/shared';
@@ -24,6 +25,7 @@ const LoginScreen: React.FC = () => {
     const response = isValidUser(email, password, state.users);
     if (response.valid && response.user) {
       setLoggedInUser(response.user);
+      storeLoggedInUser(response.user);
     }
     if (response.emailError) {
       setEmailError(response.emailError);
