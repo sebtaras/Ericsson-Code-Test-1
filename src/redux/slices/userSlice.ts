@@ -1,5 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {users} from '../../../tempData';
+import {User} from '../../model/User';
 
 export const userSlice = createSlice({
   name: 'user',
@@ -7,6 +8,10 @@ export const userSlice = createSlice({
     users: users,
   },
   reducers: {
+    addNewUser: (state, action: PayloadAction<addNewUserAction>) => {
+      console.log('created user', action.payload.user);
+      state.users.push(action.payload.user);
+    },
     setPassword: (state, action: PayloadAction<setPasswordAction>) => {
       for (let user of state.users) {
         if (
@@ -38,6 +43,10 @@ interface setBioAction {
   userId: number | string | number[];
 }
 
-export const {setPassword, setBio} = userSlice.actions;
+interface addNewUserAction {
+  user: User;
+}
+
+export const {setPassword, setBio, addNewUser} = userSlice.actions;
 
 export default userSlice.reducer;

@@ -1,30 +1,40 @@
 import React, {useContext} from 'react';
 import {useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ToastAndroid,
+} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {placeholderColor} from '../../constants';
 import {Context} from '../../context';
 import {storeLoggedInUser} from '../../storageFunctions';
-import {isValidLogin} from '../functions/isValidLogin';
+import {createNewUser} from '../functions/createNewUser';
+import {isValidRegister} from '../functions/isValidRegister';
+import {addNewUser} from '../redux/slices/userSlice';
 import {RootState} from '../redux/store';
 import sharedStyles from '../styles/shared';
 
-const LoginScreen: React.FC<any> = ({navigation}) => {
+const RegisterScreen: React.FC<any> = ({navigation}) => {
+  const {setLoggedInUser} = useContext(Context);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [repeatPassword, setRepeatPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
-
-  const {setLoggedInUser} = useContext(Context);
+  const dispatch = useDispatch();
   const state = useSelector((state: RootState) => state.user);
 
   const handleSubmit = () => {
-    const response = isValidLogin(email, password, state.users);
-    if (response.valid && response.user) {
-      setLoggedInUser(response.user);
-      storeLoggedInUser(response.user);
-    }
+    const response = isValidRegister(
+      email,
+      password,
+      repeatPassword,
+      state.users,
+    );
     if (response.emailError) {
       setEmailError(response.emailError);
     } else {
@@ -35,12 +45,29 @@ const LoginScreen: React.FC<any> = ({navigation}) => {
     } else {
       setPasswordError('');
     }
+    if (response.valid) {
+      ToastAndroid.showWithGravityAndOffset(
+        `User created for "${email}"`,
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        0,
+        200,
+      );
+      const newUser = createNewUser(email, password);
+      dispatch(
+        addNewUser({
+          user: newUser,
+        }),
+      );
+      storeLoggedInUser(newUser);
+      setLoggedInUser(newUser);
+    }
     console.log(response);
   };
 
   return (
     <View style={[sharedStyles.flexCenteredContainer]}>
-      <Text style={[sharedStyles.largeText, {marginBottom: 30}]}>LOGIN</Text>
+      <Text style={[sharedStyles.largeText, {marginBottom: 30}]}>REGISTER</Text>
       <TextInput
         placeholder="Email"
         placeholderTextColor={placeholderColor}
@@ -61,6 +88,14 @@ const LoginScreen: React.FC<any> = ({navigation}) => {
       {passwordError ? (
         <Text style={[sharedStyles.errorText]}>{passwordError}</Text>
       ) : null}
+      <TextInput
+        placeholder="Repeat password"
+        onChangeText={text => setRepeatPassword(text)}
+        placeholderTextColor={placeholderColor}
+        value={repeatPassword}
+        style={[sharedStyles.textInput, sharedStyles.blackText]}
+      />
+
       <TouchableOpacity
         onPress={handleSubmit}
         style={[
@@ -69,7 +104,7 @@ const LoginScreen: React.FC<any> = ({navigation}) => {
           {marginTop: 20},
         ]}>
         <View>
-          <Text style={[sharedStyles.whiteText]}>LOGIN</Text>
+          <Text style={[sharedStyles.whiteText]}>REGISTER</Text>
         </View>
       </TouchableOpacity>
       <TouchableOpacity
@@ -77,12 +112,12 @@ const LoginScreen: React.FC<any> = ({navigation}) => {
         onPress={() => {
           setEmailError('');
           setPasswordError('');
-          navigation.navigate('Register');
+          navigation.navigate('Login');
         }}>
-        <Text>Register instead</Text>
+        <Text>Login instead</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-export default LoginScreen;
+export default RegisterScreen;

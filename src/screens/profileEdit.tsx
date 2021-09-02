@@ -16,7 +16,7 @@ import sharedStyles from '../styles/shared';
 const EditProfile: React.FC = () => {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
-  const {setLoggedInUser, userValues} = useContext(Context);
+  const {userValues} = useContext(Context);
   const [currentPasswordError, setCurrentPasswordError] = useState('');
   const [newPasswordError, setNewPasswordError] = useState('');
   const [bioText, setBioText] = useState(userValues!.bio);
@@ -45,10 +45,6 @@ const EditProfile: React.FC = () => {
           newPassword,
         }),
       );
-      // const updatedUser = userValues as User;
-      // updatedUser!.bio = bioText;
-      // setLoggedInUser(updatedUser);
-      // storeLoggedInUser(updatedUser!);
       setCurrentPassword('');
       setNewPassword('');
       ToastAndroid.showWithGravityAndOffset(
@@ -100,7 +96,9 @@ const EditProfile: React.FC = () => {
             {marginTop: 10, width: 150},
           ]}>
           <View>
-            <Text style={[sharedStyles.whiteText]}>CHANGE BIO</Text>
+            <Text style={[sharedStyles.whiteText, sharedStyles.centeredText]}>
+              CHANGE BIO
+            </Text>
           </View>
         </TouchableOpacity>
       </View>

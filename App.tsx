@@ -21,13 +21,14 @@ import {
   storeLoggedInUser,
 } from './storageFunctions';
 import Loading from './src/components/loading';
+import RegisterScreen from './src/screens/register';
 
 const Stack = createStackNavigator();
 
 const HomeTabNavigator: React.FC = () => {
   const context = useContext(Context);
   return (
-    <Tab.Navigator>
+    <Tab.Navigator screenOptions={{swipeEnabled: context.loggedInUser != null}}>
       {context.loggedInUser ? (
         <>
           <Tab.Screen name="Profile" component={ProfileScreen} />
@@ -35,13 +36,22 @@ const HomeTabNavigator: React.FC = () => {
           <Tab.Screen name="Location" component={LocationScreen} />
         </>
       ) : (
-        <Tab.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{
-            tabBarStyle: {display: 'none'},
-          }}
-        />
+        <>
+          <Tab.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{
+              tabBarStyle: {display: 'none'},
+            }}
+          />
+          <Tab.Screen
+            name="Register"
+            component={RegisterScreen}
+            options={{
+              tabBarStyle: {display: 'none'},
+            }}
+          />
+        </>
       )}
     </Tab.Navigator>
   );
@@ -52,7 +62,6 @@ const Tab = createMaterialTopTabNavigator();
 const App: React.FC = () => {
   const [loggedInUser, setLoggedInUser] = useState<null | User>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  //TODO OVAJ USER VALUES SLAT KO PROPS UMJESTO CONTEXT
   const userValues = useSelector((state: RootState) => {
     if (loggedInUser == null) {
       return null;

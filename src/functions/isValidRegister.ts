@@ -1,17 +1,17 @@
 import {User} from '../model/User';
 
-interface isValidUserResponse {
+interface isValidRegisterResponse {
   valid?: boolean;
-  user?: User;
   emailError?: string;
   passwordError?: string;
 }
 
-export const isValidUser = (
+export const isValidRegister = (
   email: string,
   password: string,
+  repeatPassword: string,
   users: User[],
-): isValidUserResponse => {
+): isValidRegisterResponse => {
   if (!email && !password) {
     return {
       emailError: "Email can't be empty",
@@ -28,21 +28,19 @@ export const isValidUser = (
       passwordError: "Password can't be empty",
     };
   }
+  if (password != repeatPassword) {
+    return {
+      passwordError: 'Passwords do not match',
+    };
+  }
   for (const user of users) {
     if (user.email === email) {
-      if (user.password === password) {
-        return {
-          valid: true,
-          user: user,
-        };
-      } else {
-        return {
-          passwordError: 'Incorrect password',
-        };
-      }
+      return {
+        emailError: 'Email already registered',
+      };
     }
   }
   return {
-    emailError: 'User does not exist.',
+    valid: true,
   };
 };

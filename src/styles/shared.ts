@@ -54,6 +54,9 @@ const sharedStyles = StyleSheet.create({
   centeredText: {
     textAlign: 'center',
   },
+  sansSerifThin: {
+    fontFamily: 'sans-serif-thin',
+  },
 });
 
 export default sharedStyles;
