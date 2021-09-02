@@ -28,6 +28,7 @@ const style = StyleSheet.create({
 
 interface SeparatorProps {
   type?: SeparatorType;
+  margin?: number;
 }
 
 export const getSeparatorWidth = (type?: SeparatorType) => {
@@ -43,10 +44,15 @@ export const getSeparatorWidth = (type?: SeparatorType) => {
   }
 };
 
-const Separator: React.FC<SeparatorProps> = ({type}) => {
+const Separator: React.FC<SeparatorProps> = ({type, margin}) => {
   return (
     <View style={[style.container]}>
-      <View style={[style.separator, getSeparatorWidth(type)]}></View>
+      <View
+        style={[
+          style.separator,
+          getSeparatorWidth(type),
+          {margin: margin},
+        ]}></View>
     </View>
   );
 };

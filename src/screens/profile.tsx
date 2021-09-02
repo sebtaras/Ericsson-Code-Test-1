@@ -3,7 +3,7 @@ import React, {useContext, useState} from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
-import {placeholderColor, primaryColor} from '../../constants';
+import {placeholderColor, primaryColor, SeparatorType} from '../../constants';
 import {Context} from '../../context';
 import {clearLoggedInUser} from '../../storageFunctions';
 import {profileStyles} from '../styles/profileStyles';
@@ -19,16 +19,13 @@ const ProfileScreen: React.FC<any> = ({navigation}) => {
   return (
     <View style={[sharedStyles.flex1Container]}>
       <View style={[sharedStyles.flexCenteredContainer, {marginBottom: 100}]}>
-        <View>
-          <Text style={[sharedStyles.largeText]}>
-            {userValues?.email.toUpperCase()}
-          </Text>
-        </View>
-        <Separator />
-        <Text style={[sharedStyles.mediumText]}>BIO</Text>
-        <View>
-          <Text>{userValues?.bio}</Text>
-        </View>
+        <Text style={[sharedStyles.mediumText]}>
+          {userValues?.email.toUpperCase()}
+        </Text>
+        <Separator margin={10} type={SeparatorType.REGULAR} />
+        <Text style={[sharedStyles.mediumText, {marginBottom: 10}]}>BIO</Text>
+        <Text>{userValues?.bio}</Text>
+        <Separator margin={10} type={SeparatorType.REGULAR} />
       </View>
       <TouchableOpacity
         onPress={() => {
