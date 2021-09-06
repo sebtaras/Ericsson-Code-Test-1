@@ -42,12 +42,14 @@ const TasksScreen: React.FC<any> = ({navigation}) => {
             <Dialog.Button
               onPress={() => {
                 setIsDialogVisible(false);
+                if (newTaskName) {
+                  dispatch(
+                    addTask({
+                      task: createNewTask(newTaskName, userValues!.id),
+                    }),
+                  );
+                }
                 setNewTaskName('');
-                dispatch(
-                  addTask({
-                    task: createNewTask(newTaskName, userValues!.id),
-                  }),
-                );
               }}
               label="ADD"
             />

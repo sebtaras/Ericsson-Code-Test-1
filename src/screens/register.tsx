@@ -81,6 +81,7 @@ const RegisterScreen: React.FC<any> = ({navigation}) => {
       <TextInput
         placeholder="Password"
         onChangeText={text => setPassword(text)}
+        textContentType={'password'}
         placeholderTextColor={placeholderColor}
         value={password}
         style={[sharedStyles.textInput, sharedStyles.blackText]}
@@ -91,6 +92,7 @@ const RegisterScreen: React.FC<any> = ({navigation}) => {
       <TextInput
         placeholder="Repeat password"
         onChangeText={text => setRepeatPassword(text)}
+        textContentType={'password'}
         placeholderTextColor={placeholderColor}
         value={repeatPassword}
         style={[sharedStyles.textInput, sharedStyles.blackText]}

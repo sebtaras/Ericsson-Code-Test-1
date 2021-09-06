@@ -70,13 +70,15 @@ const Checklist: React.FC<any> = ({route}) => {
             <Dialog.Button
               onPress={() => {
                 setIsDialogVisible(false);
+                if (newItemText) {
+                  dispatch(
+                    addTaskItem({
+                      taskId: taskId,
+                      item: createNewItem(newItemText),
+                    }),
+                  );
+                }
                 setNewItemText('');
-                dispatch(
-                  addTaskItem({
-                    taskId: taskId,
-                    item: createNewItem(newItemText),
-                  }),
-                );
               }}
               label="ADD"
             />

@@ -41,7 +41,7 @@ const LocationScreen: React.FC = () => {
       }
     }
     setupLocation();
-  });
+  }, []);
 
   return (
     <View style={[sharedStyles.flexCenteredContainer]}>

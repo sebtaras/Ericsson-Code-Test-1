@@ -55,6 +55,7 @@ const LoginScreen: React.FC<any> = ({navigation}) => {
         placeholder="Password"
         onChangeText={text => setPassword(text)}
         placeholderTextColor={placeholderColor}
+        textContentType={'password'}
         value={password}
         style={[sharedStyles.textInput, sharedStyles.blackText]}
       />
